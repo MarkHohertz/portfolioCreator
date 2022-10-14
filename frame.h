@@ -55,6 +55,7 @@ public:
 	void toggleAnalytics(bool onIfTrue);
 	void fillAllocationList(portType type);
 	bool legitimatePrices();
+	void setNewAnalyticsText();
 
 private:
 
@@ -62,10 +63,6 @@ private:
 	wxString GetP2Text();
 	wxString GetP4Text();
 	wxString GetP4Descript();
-	wxString GetGraphSummary();
-	wxString GetBetaText();
-	wxString GetSharpeText();
-	wxString GetStdText();
 	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL, wxString txt = "");
 	
 	int stockCount;
@@ -74,8 +71,10 @@ private:
 	double risk;
 	double levAmt;
 	double interest;
+	double horizonLength;
 	double portSize;
 	stock* index = new stock("^GSPC");  //standalone stock to represent S&P 500 - required for beta calculations
+	stock* russell = new stock("^RUT");
 	requester myRequester;
 	frontier* investPort = new frontier();
 	parabola* frontierParab;
@@ -122,5 +121,9 @@ private:
 	wxBoxSizer* betaSizer;
 	wxBoxSizer* sharpeSizer;
 	wxBoxSizer* stdSizer;
-	wxBoxSizer* panel3ToggleSizer;  //contains everything except the html control at the top of panel 3
+	wxBoxSizer* panel3ToggleSizer;  //contains everything except the html control at the top of panel 3;
+	wxStaticText* graphSummaryText;
+	wxStaticText* betaText;
+	wxStaticText* sharpeText;
+	wxStaticText* stdText;
 };
