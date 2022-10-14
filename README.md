@@ -18,9 +18,9 @@ This program creates an efficient stock portfolio using Modern Portfolio theory.
 	-Open the solution file of the program in Visual Studio then, click Project > Properties 
 		-C/C++ > Runtime Library = “Multi-Threaded (/MT)”
 		-Added the filepaths/lib names as pictured below
-		-![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadMe1.png)
-		-![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme2.png)
-		-![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme3.png)
+		-![1](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadMe1.png)
+		-![2](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme2.png)
+		-![3](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme3.png)
 
 ## Known Issues
 
