@@ -13,6 +13,7 @@ stock::stock(std::string s, double p, std::map<std::string, double> r, double av
 	calcReturnMap();
 	calcDailyAVGRet();
 	calcDailySTD();
+	calcYearlySTD();
 	calcBeta(r, avg, std);
 }
 
@@ -43,6 +44,11 @@ void stock::calcDailySTD()
 	dailySTD = sqrt(add / (returns.size() - 1));
 }
 
+void stock::calcYearlySTD()
+{
+	yearlySTD = dailySTD * sqrt(252);
+}
+
 void stock::calcDailyAVGRet()
 {
 	std::ofstream myfile;
@@ -68,7 +74,7 @@ void stock::calcDailyAVGRet()
 }
 
 
-void stock::setPriceData()
+void stock::setPriceData()   //requestor class generates .txt files that need to be put into data structure to more easily manipulate
 {
 	std::ifstream fileReader;
 	std::string row;
