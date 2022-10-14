@@ -14,6 +14,7 @@ public:
 	~stock();
 	void calcReturnMap();
 	void calcDailySTD();
+	void calcYearlySTD();
 	void calcDailyAVGRet();
 	void setPriceData();
 	void calcBeta(std::map<std::string, double> indexReturns, double indexAVGDailyRet, double indexSTD);
@@ -32,4 +33,3 @@ public:
 	std::string ticker;
 	
 };  
-
