@@ -37,14 +37,14 @@ public:
 	std::vector<stock*> stockHolder; //temp putting this here to make testing easier
 	Eigen::MatrixXd covariances;
 	Eigen::MatrixXd inverseCVM;
-	Eigen::ArrayXd varhldrtest;
-	Eigen::ArrayXd maxshrphldrtest;
 	int count;
+	double betas[4];
+	double riskFree = 0;
 
 private:
 	
-	double riskFree = 0;
-	double betas[4];
+	
+	
 	double stds[4];                 // 0 = stdBar, the min variance port, 1 = maximum std efficient portfolio, 2= max sharpe ratio port, 3= risk preference std
 	double portReturns[4];
 	double risk;
@@ -70,4 +70,3 @@ private:
 	Eigen::ArrayXd secondSigma;  //vector for use in calculating the stock weights
 
 };
-
