@@ -242,8 +242,8 @@ void frontier::calcMaxSTD() //this does not calculate the true maxSTD. I do not 
 		}
 	}
 	 
-	stds[maxSTD] = stockHolder.at(hIndex)->dailySTD * sqrt(252);
-	
+	stds[maxSTD] = stockHolder.at(hIndex)->dailySTD * sqrt(252) * 1.1;
+
 }
 
 void frontier::calcMaxSharpeStdAndWeights()       // weights -> portfolio return -> std
@@ -264,11 +264,6 @@ void frontier::calcMaxSharpeStdAndWeights()       // weights -> portfolio return
 	{
 		weights(maxShp, i) = mxShpHldr(i);
 	}
-	
-	varhldrtest.resize(varHldr.rows());
-	maxshrphldrtest.resize(mxShpHldr.rows());
-	varhldrtest = varHldr;
-	maxshrphldrtest = mxShpHldr;
 
 	weightedRets = mxShpHldr.array() * stockReturns.array();
 	portReturns[maxShp] = weightedRets.sum();
