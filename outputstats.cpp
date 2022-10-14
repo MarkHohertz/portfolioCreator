@@ -10,10 +10,12 @@ outputstats::outputstats(Eigen::RowVectorXd w, std::vector<stock*> v, double inv
 	g2lweights.resize(v.size());
 	g2lLabels.resize(v.size());
 	g2lvalues.resize(v.size());
+	stockBetas.resize(v.size());
 	for (int i = 0; i < v.size(); i++)
 	{
 		
 		g2lLabels[i] = v[i]->ticker;
+		stockBetas[i] = v[i]->beta;
 	
 	}
 	CalcDollarAmts();
@@ -38,6 +40,37 @@ double outputstats::getLeverage()
 int outputstats::getNumAssets()
 {
 	//return numAssets;
+}
+
+void outputstats::calcPortBeta()
+{
+	product.resize(1);
+	product	=  weights * stockBetas;
+	portBeta = product.sum();
+}
+
+double outputstats::calcTreynor(double portRet, double riskFree, double beta)
+{
+	double treynor;
+	treynor = (portRet - riskFree) / beta;
+	return treynor;
+}
+
+double outputstats::calcSharpe(double portRet, double riskFree, double stDev)
+{
+	double sharpe;
+	sharpe = (portRet - riskFree) / stDev;
+	return sharpe;
+}
+
+double outputstats::calcSTD(double dailyStd)                   //need STD for S&P 500 & Russell 2000
+{
+	return dailyStd * 252;
+}
+
+double outputstats::CalcFV(double portRet, double size, int years)
+{
+	return size * pow((1 + portRet), years);
 }
 
 void outputstats::CalcDollarAmts()
