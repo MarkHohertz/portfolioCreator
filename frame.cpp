@@ -183,7 +183,7 @@ frame::frame(wxFrame* frame, const wxString& title, int x, int y, int w, int h) 
     allocBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, thirdPanel, "Allocation");
     graphWindow = new mpWindow(graphBoxSizer->GetStaticBox(), wxID_ANY, wxPoint(0,0), wxSize(500, 500), wxSUNKEN_BORDER);
     graphBoxSizer->Add(graphWindow, wxSizerFlags().Expand().FixedMinSize().Border(wxALL, 10));
-    analyticSizer = new wxBoxSizer(wxHORIZONTAL);
+    
     analyticSizer->Add(
         graphBoxSizer,
         0,            
@@ -265,40 +265,16 @@ frame::frame(wxFrame* frame, const wxString& title, int x, int y, int w, int h) 
     sharpeSizer = new wxBoxSizer(wxHORIZONTAL);
     stdSizer = new wxBoxSizer(wxHORIZONTAL);
     panel3Sizer->Add(topsizer3, wxSizerFlags().Expand().Border(wxALL, 10));
-    wxStaticText* teststr = new wxStaticText(thirdPanel, wxID_ANY, "Writeup goes here.");
-    panel3TextSizer->Add(teststr);
-    /*
-    graphSumSizer->Add(
-        CreateHTMLCtrl(thirdPanel, GetGraphSummary()),
-        0,            // make vertically stretchable
-        wxEXPAND |    // make horizontally stretchable
-        wxALL,        //   and make border all around
-        0);         // set border width to 0
-    betaSizer->Add(
-        CreateHTMLCtrl(thirdPanel, GetBetaText()),
-        0,            // make vertically stretchable
-        wxEXPAND |    // make horizontally stretchable
-        wxALL,        //   and make border all around
-        0);         // set border width to 0
-    sharpeSizer->Add(
-        CreateHTMLCtrl(thirdPanel, GetSharpeText()),
-        0,            // make vertically stretchable
-        wxEXPAND |    // make horizontally stretchable
-        wxALL,        //   and make border all around
-        0);         // set border width to 0
-    stdSizer->Add(
-        CreateHTMLCtrl(thirdPanel, GetStdText()),
-        0,            // make vertically stretchable
-        wxEXPAND |    // make horizontally stretchable
-        wxALL,        //   and make border all around
-        0);         // set border width to 0
+    graphSummaryText = new wxStaticText(thirdPanel, wxID_ANY, "The graph at the top left displays all the efficient portfolios capable of being produced from the equities you selected. Though other combinations can be created, the ones on the line represent the only allocations that a logical investor should make. The yellow rhombus on the line is where your portfolio sits on the efficient frontier of portfolios. Portfolios get risker as you move left to right on the curve. If you selected 0% risk tolerance, the personal risk preference portfolio and the minimum variance portfolio will be the same. If no maximum sharpe portfolio is pictured, then there is no maximum sharpe portfolio that outperforms the risk free rate.", wxDefaultPosition, wxSize(1248, 45));
+    betaText = new wxStaticText(thirdPanel, wxID_ANY, "Default text", wxDefaultPosition, wxSize(1248, 30));
+    sharpeText = new wxStaticText(thirdPanel, wxID_ANY, "Default text", wxDefaultPosition, wxSize(1248, 30));
+    stdText = new wxStaticText(thirdPanel, wxID_ANY, "Default text", wxDefaultPosition, wxSize(1248, 30));
+    panel3TextSizer->Add(graphSummaryText, 0, wxFIXED_MINSIZE | wxALL,10);
+    panel3TextSizer->Add(betaText, 0, wxFIXED_MINSIZE | wxALL, 10);
+    panel3TextSizer->Add(sharpeText, 0, wxFIXED_MINSIZE | wxALL, 10);
+    panel3TextSizer->Add(stdText, 0, wxFIXED_MINSIZE | wxALL, 10);
 
-    panel3TextSizer->Add(graphSumSizer);
-    panel3TextSizer->Add(betaSizer);
-    panel3TextSizer->Add(sharpeSizer);
-    panel3TextSizer->Add(stdSizer);
-    */
-    panel3ToggleSizer->Add(panel3TextSizer, 0, wxEXPAND | wxALL, 10);
+    panel3ToggleSizer->Add(panel3TextSizer, 0, wxFIXED_MINSIZE | wxALL, 10);
     panel3Sizer->Add(panel3ToggleSizer, wxSizerFlags().Expand().Border(wxALL, 10));
     thirdPanel->SetSizerAndFit(panel3Sizer);
     panel3ToggleSizer->ShowItems(false);
@@ -435,28 +411,29 @@ void frame::GenPort(wxCommandEvent& event)    //performs some data validation, t
     }
     else
     {
-        std::string riskCheck, levAmtCheck, interestCheck, portSizeCheck;
+        std::string riskCheck, levAmtCheck, interestCheck, horizonLengthCheck, portSizeCheck;
         riskCheck = "";
         levAmtCheck = "";
         interestCheck = "";
         portSizeCheck = "";
+        horizonLengthCheck = "";
         std::stringstream errorStream;
 
-        //get risk tolerance
+        //get horizon length
 
         try
         {
-            risk = std::stod(std::string(riskCtrl->GetValue())) / 100;
-            if (risk < 0 || risk > 1)
+            horizonLength = std::stod(std::string(horizonEntry->GetValue()));
+            if (horizonLength < 1 || horizonLength > 50)
             {
-                errorStream << "\n" << "   -Risk tolerance must be between 0 and 100.";
+                errorStream << "\n" << "   -Horizon length must be between 1 and 50 (inclusive).";
             }
         }
         catch (const std::exception& e)
         {
-            risk = -1;
-            riskCheck = "   -Risk tolerance % cannot have letters or symbols.";
-            errorStream << "\n" << riskCheck;
+            horizonLength = -1;
+            horizonLengthCheck = "   -Horizon length cannot have letters or symbols.";
+            errorStream << "\n" << horizonLengthCheck;
         }
 
         //get portfolio size
@@ -475,6 +452,24 @@ void frame::GenPort(wxCommandEvent& event)    //performs some data validation, t
             portSizeCheck = "   -Portfolio size cannot have letters or symbols.";
             errorStream << "\n" << portSizeCheck;
         }
+
+        //get risk tolerance
+
+        try
+        {
+            risk = std::stod(std::string(riskCtrl->GetValue())) / 100;
+            if (risk < 0 || risk > 1)
+            {
+                errorStream << "\n" << "   -Risk tolerance must be between 0 and 100.";
+            }
+        }
+        catch (const std::exception& e)
+        {
+            risk = -1;
+            riskCheck = "   -Risk tolerance % cannot have letters or symbols.";
+            errorStream << "\n" << riskCheck;
+        }
+
         if (errorStream.str() == "")
         {
             myRequester.updateStock("^GSPC");                       //need to get a "market" dataset in order to calculate betas. Market data required to add stocks to frontier
@@ -484,7 +479,14 @@ void frame::GenPort(wxCommandEvent& event)    //performs some data validation, t
             index->calcReturnMap();
             index->calcDailyAVGRet();
             index->calcDailySTD();
-            index->calcDailyAVGRet();
+            index->calcYearlySTD();
+            myRequester.updateStock("^RUT");
+            myRequester.pullData(horizonVar2.GetLong());
+            russell->setPriceData();
+            russell->calcReturnMap();
+            russell->calcDailyAVGRet();
+            russell->calcDailySTD();
+            russell->calcYearlySTD();
             myRequester.pullRiskFree();
             investPort->setRiskFree(myRequester.riskFree/100, interest);
             investPort->setRisk(risk);
@@ -510,7 +512,8 @@ void frame::GenPort(wxCommandEvent& event)    //performs some data validation, t
             investPort->calcWeights(maxSTD);
             investPort->calcWeights(riskPref);
             stats = new outputstats(investPort->getWeights(riskPref),investPort->stockHolder,portSize);
-           
+            stats->calcPortBeta();
+            setNewAnalyticsText();
             frontierParab = new parabola("Efficient Frontier", mpALIGN_RIGHT, investPort->getIntermediateVar("eBar"), investPort->getIntermediateVar("C"), investPort->getIntermediateVar("D"), investPort->getSTD(minVar), investPort->getSTD(maxSTD));
             capitalAllocLine = new tangentline("Capital Allocation Line", mpALIGN_LEFT, investPort->getIntermediateVar("A"), investPort->getIntermediateVar("B"), investPort->getIntermediateVar("C"), myRequester.riskFree/100, levAmt, interest / 100, investPort->getSTD(maxShp), investPort->getSTD(minVar), investPort->getSTD(maxSTD));
             mpScaleX* xaxis = new mpScaleX(wxT("Standard Deviation"), mpALIGN_BORDER_BOTTOM);
@@ -530,6 +533,9 @@ void frame::GenPort(wxCommandEvent& event)    //performs some data validation, t
             graphWindow->AddLayer(capitalAllocLine);
             graphWindow->AddLayer(xaxis);
             graphWindow->AddLayer(yaxis);
+
+            graphWindow->Fit(0,investPort->getSTD(maxSTD)*1.1,0, investPort->getReturn(maxSTD) * 1.1);
+
            
             wxImage        load1;
             load1.LoadFile(wxT("./minVar.bmp"), wxBITMAP_TYPE_BMP);
@@ -658,13 +664,12 @@ void frame::toggleAnalytics(bool onIfTrue)    //toggles analytics on the 3rd pag
     {
         panel3ToggleSizer->ShowItems(false);
         panel3ToggleSizer->Layout();
-        allocList->DeleteAllItems();
     }
 }
 
 void frame::fillAllocationList(portType type)     //fills in allocList with stocks by working with an outputstats object
 {        
-    
+    allocList->DeleteAllItems();
     wxVector<wxVariant> tempItem;
     wxVariant tempTicker = "";
     wxVariant varcount = 0;
@@ -678,31 +683,6 @@ void frame::fillAllocationList(portType type)     //fills in allocList with stoc
     Eigen::RowVectorXd tempWeights;
     tempWeights.resize(stats->g2lLabels.size());
     tempWeights = stats->getWeights();
-    std::stringstream test;
-    test << "Here are the Tickers: " << "\n";
-    for (int i = 0; i < stats->g2lLabels.size(); i++)
-    {
-        test << tickerHolder[i] << "\n";
-    }
-    test << "Here are the values: " << "\n";
-    for (int i = 0; i < stats->g2lLabels.size(); i++)
-    {
-        test << tempValues(i) << "\n";
-    }
-    test << "Portfolio size: " << std::stod(std::string(sizeEntry->GetValue())) << "\n";
-    
-    test << "Here are the weights: " << "\n";
-    for (int i = 0; i < stats->g2lLabels.size(); i++)
-    {
-     
-        test << tempWeights(i) << "\n";
-       
-    }
-    test << "Trying a different way to access weights: " << investPort->getWeights(riskPref) << "\n";
-    test << "Trying a different way to access weights: " << stats->getWeights() << "\n";
-    wxString msg;
-    msg.Printf(wxT("Test string: \n %s"), test.str());
-    wxMessageBox(msg, "Portfolio Creator", wxOK | wxICON_INFORMATION, this);
 
     for (int i = 0; i < stats->g2lLabels.size(); i++)
     {
@@ -816,55 +796,6 @@ wxString frame::GetP4Descript()
     return wxString::FromAscii(text);
 }
 
-wxString frame::GetGraphSummary()
-{
-    const char* text =
-        "<html>"
-        "<head>"
-        "</head>"
-        "<body>"
-        "<p>The graph to the right displays all the efficient portfolios capable of being produced from the equities you selected. Though other combinations can be created, the ones on the line represent the only allocations that a logical investor should make. The dot on the line is where your portfolio sits on the efficient frontier of portfolios.  Portfolios get risker as you move left to right on the curve.</p>"
-        "</body>"
-        "</html>";
-    return wxString::FromAscii(text);
-}
-wxString frame::GetBetaText()
-{
-    const char* text =
-        "<html>"
-        "<head>"
-        "</head>"
-        "<body>"
-        "<p>Your portfolio’s beta is ___ when using the S&P 500 as a proxy of the market.  This gives your portfolio a Treynor ratio of ___ compared to ____ for the S&P.  Consider diversifying your portfolio with stocks that yield more or that have lower betas to improve this ratio.</p>"
-        "</body>"
-        "</html>";
-    return wxString::FromAscii(text);
-}
-wxString frame::GetSharpeText()
-{
-    const char* text =
-        "<html>"
-        "<head>"
-        "</head>"
-        "<body>"
-        "<p>Your portfolio’s Sharpe ratio is ___ compared to the S&P’s value of ____.  This means your portfolio’s risk/return tradeoff is better/worse than the S&P 500s.  To improve your portfolio’s Sharpe ratio, consider choosing stocks that yield more or that covary less with each other.</p>"
-        "</body>"
-        "</html>";
-    return wxString::FromAscii(text);
-}
-wxString frame::GetStdText()
-{
-    const char* text =
-        "<html>"
-        "<head>"
-        "</head>"
-        "<body>"
-        "<p>Your portfolio’s yearly returns have a standard deviation of ___ which is ___x that of the S&P 500 and ___x that of the Russell 2000. Assuming past returns hold, your portfolio would be worth $___ in ___ years.  Your largest holdings would be in ____ (ticker), ____ (ticker), and ____ (ticker). </p>"
-        "</body>"
-        "</html>";
-    return wxString::FromAscii(text);
-}
-
 wxHtmlWindow* frame::CreateHTMLCtrl(wxWindow* parent, wxString txt)
 {
     if (!parent)  
@@ -875,4 +806,50 @@ wxHtmlWindow* frame::CreateHTMLCtrl(wxWindow* parent, wxString txt)
         FromDIP(wxSize(400, 100)));
     ctrl->SetPage(txt);
     return ctrl;
+}
+
+void frame::setNewAnalyticsText()         //functions like a madlib. Calcs relevant statistics, formats them with proper number of sigfigs, and places into paragraphs.
+{
+    double portBetaD = ((int)(stats->portBeta*100))/100.0;
+    std::string portBeta = std::to_string(portBetaD).substr(0, std::to_string(portBetaD).find(".") + 3);
+    double portTreynorD = stats->calcTreynor(investPort->getReturn(riskPref), investPort->riskFree, portBetaD);
+    std::string portTreynor = std::to_string(portTreynorD).substr(0, std::to_string(portTreynorD).find(".") + 3);
+    double sandpTreynorD = stats->calcTreynor(index->dailyAVGRet * 252, investPort->riskFree, 1);
+    std::string sandpTreynor = std::to_string(sandpTreynorD).substr(0, std::to_string(sandpTreynorD).find(".") + 3);
+
+    betaText->SetLabelText(wxString("Your portfolioâ€™s beta is " + portBeta + " when using the S&P 500 as a proxy of the market. This gives your portfolio a Treynor ratio of " + portTreynor + " compared to " + sandpTreynor + " for the S&P. Consider diversifying your portfolio with stocks that yield more or that have lower betas to improve this ratio."));
+
+    double portShpD = stats->calcSharpe(investPort->getReturn(riskPref), investPort->riskFree, investPort->getSTD(riskPref));
+    std::string portShp = std::to_string(portShpD).substr(0, std::to_string(portShpD).find(".") + 3);
+    double sandpShpD = stats->calcSharpe(index->dailyAVGRet * 252, investPort->riskFree, index->yearlySTD);
+    std::string sandpShp = std::to_string(sandpShpD).substr(0, std::to_string(sandpShpD).find(".") + 3);
+    std::string betterOrWorse;
+    
+    if (portShpD > sandpShpD)
+    {
+        betterOrWorse = "better";
+    }
+    else if (portShpD < sandpShpD)
+    {
+        betterOrWorse = "worse";
+    }
+    else
+    {
+        betterOrWorse = "the same as";
+    }
+    sharpeText->SetLabelText(wxString("Your portfolioâ€™s Sharpe ratio is " + portShp + " compared to the S&Pâ€™s value of " + sandpShp + ".This means your portfolioâ€™s risk/return tradeoff is " + betterOrWorse + " than the S&P 500's. To improve your portfolioâ€™s Sharpe ratio, consider choosing stocks that yield more or that covary less with each other."));
+
+    double portStdD = investPort->getSTD(riskPref);
+    std::string portStd = std::to_string(portStdD).substr(0, std::to_string(portStdD).find(".") + 3);
+    double sandpStdD = index->yearlySTD;
+    std::string sandpStd = std::to_string(sandpStdD).substr(0, std::to_string(sandpStdD).find(".") + 3);
+    std::string timesSandp = std::to_string(portStdD/sandpStdD).substr(0, std::to_string(portStdD / sandpStdD).find(".") + 2);
+    double russell2kStdD = russell->yearlySTD;
+    std::string russell2kStd = std::to_string(russell2kStdD).substr(0, std::to_string(russell2kStdD).find(".") + 3);
+    std::string timesRussell = std::to_string(portStdD / russell2kStdD).substr(0, std::to_string(portStdD / russell2kStdD).find(".") + 2);
+    double futureValueD = stats->CalcFV(investPort->getReturn(riskPref), portSize, horizonLength);
+    std::string futureValue = std::to_string(futureValueD).substr(0, std::to_string(futureValueD).find(".") + 3);
+    std::string horizon = std::to_string(horizonLength).substr(0, std::to_string(horizonLength).find("."));
+    stdText->SetLabelText(wxString("Your portfolioâ€™s yearly returns have a standard deviation of " + portStd + " which is " + timesSandp + "x that of the S&P 500 and " + timesRussell + "x that of the Russell 2000. Assuming past returns hold, your portfolio would be worth $" + futureValue + " in " + horizon + " year(s)."));
+    
 }
