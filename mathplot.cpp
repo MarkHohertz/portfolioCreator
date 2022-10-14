@@ -1340,49 +1340,51 @@ void mpWindow::OnMouseRightDown(wxMouseEvent     &event)
 
 // Process mouse wheel events
 // JLB
-void mpWindow::OnMouseWheel( wxMouseEvent &event )
-{
-	
-    if (!m_enableMouseNavigation)
-    {
-        event.Skip();
-        return;
-    }
 
-//     GetClientSize( &m_scrX,&m_scrY);
-
-    if (event.m_controlDown)
-    {
-	wxPoint clickPt( event.GetX(),event.GetY() );
-        // CTRL key hold: Zoom in/out:
-        if (event.GetWheelRotation()>0)
-                ZoomIn( clickPt );
-        else    ZoomOut( clickPt );
-    }
-    else
-    {
-        // Scroll vertically or horizontally (this is SHIFT is hold down).
-        int change = - event.GetWheelRotation(); // Opposite direction (More intuitive)!
-        double changeUnitsX = change / m_scaleX;
-        double changeUnitsY = change / m_scaleY;
-
-        if (event.m_shiftDown)
+	void mpWindow::OnMouseWheel( wxMouseEvent &event )
 	{
-                m_posX 		+= changeUnitsX;
-		m_desiredXmax 	+= changeUnitsX;
-		m_desiredXmin 	+= changeUnitsX;
-	}
-        else    
-	{
-		m_posY 		-= changeUnitsY;
-		m_desiredYmax	-= changeUnitsY;
-		m_desiredYmax	-= changeUnitsY;
+	
+		if (!m_enableMouseNavigation)
+		{
+			event.Skip();
+			return;
+		}
+
+	//     GetClientSize( &m_scrX,&m_scrY);
+
+		if (event.m_controlDown)
+		{
+		wxPoint clickPt( event.GetX(),event.GetY() );
+			// CTRL key hold: Zoom in/out:
+			if (event.GetWheelRotation()>0)
+					ZoomIn( clickPt );
+			else    ZoomOut( clickPt );
+		}
+		else
+		{
+			// Scroll vertically or horizontally (this is SHIFT is hold down).
+			int change = - event.GetWheelRotation(); // Opposite direction (More intuitive)!
+			double changeUnitsX = change / m_scaleX;
+			double changeUnitsY = change / m_scaleY;
+
+			if (event.m_shiftDown)
+		{
+					m_posX 		+= changeUnitsX;
+			m_desiredXmax 	+= changeUnitsX;
+			m_desiredXmin 	+= changeUnitsX;
+		}
+			else    
+		{
+			m_posY 		-= changeUnitsY;
+			m_desiredYmax	-= changeUnitsY;
+			m_desiredYmax	-= changeUnitsY;
+		}
+
+			UpdateAll();
+		}
+	
 	}
 
-        UpdateAll();
-    }
-	
-}
 
 // If the user "drags" with the right buttom pressed, do "pan"
 // JLB
