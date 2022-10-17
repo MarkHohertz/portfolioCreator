@@ -37,8 +37,8 @@ This program creates an efficient stock portfolio using Modern Portfolio theory.
 	
 ## Links to Theory
 
-1. For general background information on the theory supporting this project: ![Modern Portfolio Theory](https://en.wikipedia.org/wiki/Modern_portfolio_theory)
+1. For general background information on the theory supporting this project: [Modern Portfolio Theory](https://en.wikipedia.org/wiki/Modern_portfolio_theory)
 	
-2. For specific information about the derivation that was directly used to create the program: ![An Analytical Derivation of the Efficient Portfolio Frontier](https://www.researchgate.net/publication/38006987_An_Analytic_Derivation_of_the_Efficient_Portfolio_Frontier)
+2. For specific information about the derivation that was directly used to create the program: [An Analytical Derivation of the Efficient Portfolio Frontier](https://www.researchgate.net/publication/38006987_An_Analytic_Derivation_of_the_Efficient_Portfolio_Frontier)
 
 Mark A. Hohertz
