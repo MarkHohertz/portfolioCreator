@@ -32,7 +32,13 @@ This program creates an efficient stock portfolio using Modern Portfolio theory.
 
 ## Acknowledgements
 
-	- Without the initial theory created by Harry Markowitz and the subequent ![](https://www.researchgate.net/publication/38006987_An_Analytic_Derivation_of_the_Efficient_Portfolio_Frontier) by Robert C. Merton, this project would have been impossible
+	- Without the initial theory created by Harry Markowitz and the subequent analytical derivation by Robert C. Merton, this project would have been impossible
 	- The moderators on the wxWidgets forum answer questions daily. Without seeing their answers to other user's issues, this would have taken far longer to finish.
+	
+## Links to Theory
+
+1. For general background information on the theory supporting this project: ![Modern Portfolio Theory](https://en.wikipedia.org/wiki/Modern_portfolio_theory)
+	
+2. For specific information about the derivation that was directly used to create the program: ![An Analytical Derivation of the Efficient Portfolio Frontier](https://www.researchgate.net/publication/38006987_An_Analytic_Derivation_of_the_Efficient_Portfolio_Frontier)
 
 Mark A. Hohertz
