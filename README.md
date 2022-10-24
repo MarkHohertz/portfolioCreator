@@ -2,7 +2,8 @@
 
 ## Functionality overview
 
-This program creates an efficient stock portfolio using Modern Portfolio theory. Based on stocks selected by the user, it calculates the mix of stocks that will give you the maximum return for a given level of risk. Risk in this context is defined as standard deviation.
+This program creates an efficient stock portfolio using Modern Portfolio theory. Based on stocks selected by the user, it calculates the mix of stocks that will give you the maximum return for a given level of risk. Risk in this context is defined as standard deviation. Below is an example of the output:
+	![](https://user-images.githubusercontent.com/33075054/197642740-22490b30-a32c-45ea-a71c-be237d8f24ca.png)
 
 ## Installation & Usage
 
