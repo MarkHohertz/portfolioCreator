@@ -3,7 +3,7 @@
 ## Functionality overview
 
 This program creates an efficient stock portfolio using Modern Portfolio theory. Based on stocks selected by the user, it calculates the mix of stocks that will give you the maximum return for a given level of risk. Risk in this context is defined as standard deviation. Below is an example of the output:
-	![](https://user-images.githubusercontent.com/33075054/197642740-22490b30-a32c-45ea-a71c-be237d8f24ca.png)
+	![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMeUse.png)
 
 ## Installation & Usage
 
@@ -19,9 +19,9 @@ This program creates an efficient stock portfolio using Modern Portfolio theory.
 	- Open the solution file of the program in Visual Studio then, click Project > Properties 
 		- C/C++ > Runtime Library = “Multi-Threaded (/MT)”
 		- Added the filepaths/lib names as pictured below
-		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadMe1.png)
-		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme2.png)
-		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/pcReadme3.png)
+		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMe1.png)
+		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMe2.png)
+		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMe3.png)
 
 ## Known Issues
 
