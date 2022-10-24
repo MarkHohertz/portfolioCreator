@@ -21,7 +21,7 @@ This program creates an efficient stock portfolio using Modern Portfolio theory.
 		- Added the filepaths/lib names as pictured below
 		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMe1.png)
 		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadme2.png)
-		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadMe3.png)
+		 ![](https://github.com/MarkHohertz/portfolioCreator/blob/main/readMeImages/pcReadme3.png)
 
 ## Known Issues
 
